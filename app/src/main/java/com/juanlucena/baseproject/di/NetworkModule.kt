@@ -1,17 +1,26 @@
-package com.juanlucena.baseproject.data.network
+package com.juanlucena.baseproject.di
 
 import com.juanlucena.baseproject.BuildConfig
 import com.juanlucena.baseproject.data.interceptors.BaseInterceptor
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
-object ApiClient{
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
 
-    fun getClient(baseUrl: String): Retrofit {
+    @Singleton
+    @Provides
+    fun provideRetrofit() : Retrofit {
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(httpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -25,4 +34,7 @@ object ApiClient{
             .addInterceptor(BaseInterceptor())
             .build()
     }
+
+
+
 }
